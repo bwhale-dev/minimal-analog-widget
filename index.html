@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Minimal Analog Widget</title>
+  </head>
+
+  <body>
+    <svg style="display: none;">
+      <defs>
+        <filter id="roughEdges">
+          <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="2" result="noise" />
+          <feDisplacementMap in="SourceGraphic" in2="noise" scale="4" />
+        </filter>
+      </defs>
+    </svg>
+
+    <div id="root"></div>
+
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
