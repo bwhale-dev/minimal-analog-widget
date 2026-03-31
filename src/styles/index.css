@@ -1,11 +1,9 @@
 @import "tailwindcss";
-@source "../**/*.{js,ts,jsx,tsx}";
-@import "tw-animate-css";
-@import "tailwindcss";
-
-/* あなたのプロジェクトにある独自の設定を読み込む */
 @import "./theme.css";
 @import "./fonts.css";
+@source "../**/*.{js,ts,jsx,tsx}";
+@import "tw-animate-css";
+
 
 @theme {
   /* 手描き風のガタガタアニメーションを復活 */
