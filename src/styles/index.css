@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+/* あなたのプロジェクトにある独自の設定を読み込む */
+@import "./theme.css";
+@import "./fonts.css";
+
+@theme {
+  /* 手描き風のガタガタアニメーションを復活 */
+  --animate-rough: rough 0.1s infinite;
+  @keyframes rough {
+    0% { transform: translate(0, 0); }
+    50% { transform: translate(0.5px, 0.5px); }
+    100% { transform: translate(0, 0); }
+  }
+}

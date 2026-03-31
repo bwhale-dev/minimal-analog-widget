@@ -1,0 +1,79 @@
+{
+  "hash": "9f568d24",
+  "configHash": "08d3423f",
+  "lockfileHash": "e7267fff",
+  "browserHash": "a50c17f8",
+  "optimized": {
+    "@radix-ui/react-label": {
+      "src": "../../node_modules/@radix-ui/react-label/dist/index.mjs",
+      "file": "@radix-ui_react-label.js",
+      "fileHash": "b9de013f",
+      "needsInterop": false
+    },
+    "@radix-ui/react-slider": {
+      "src": "../../node_modules/@radix-ui/react-slider/dist/index.mjs",
+      "file": "@radix-ui_react-slider.js",
+      "fileHash": "0724fb77",
+      "needsInterop": false
+    },
+    "@radix-ui/react-switch": {
+      "src": "../../node_modules/@radix-ui/react-switch/dist/index.mjs",
+      "file": "@radix-ui_react-switch.js",
+      "fileHash": "dbee8ced",
+      "needsInterop": false
+    },
+    "clsx": {
+      "src": "../../node_modules/clsx/dist/clsx.mjs",
+      "file": "clsx.js",
+      "fileHash": "a51a4268",
+      "needsInterop": false
+    },
+    "lucide-react": {
+      "src": "../../node_modules/lucide-react/dist/esm/lucide-react.js",
+      "file": "lucide-react.js",
+      "fileHash": "136198db",
+      "needsInterop": false
+    },
+    "react": {
+      "src": "../../node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "ce5af9ed",
+      "needsInterop": true
+    },
+    "react-dom/client": {
+      "src": "../../node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "154718e0",
+      "needsInterop": true
+    },
+    "react-router": {
+      "src": "../../node_modules/react-router/dist/development/index.mjs",
+      "file": "react-router.js",
+      "fileHash": "434ed1ba",
+      "needsInterop": false
+    },
+    "tailwind-merge": {
+      "src": "../../node_modules/tailwind-merge/dist/bundle-mjs.mjs",
+      "file": "tailwind-merge.js",
+      "fileHash": "a14dce89",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-6XLYPDZZ": {
+      "file": "chunk-6XLYPDZZ.js"
+    },
+    "chunk-GQQUWBAM": {
+      "file": "chunk-GQQUWBAM.js"
+    },
+    "chunk-V2X5ZORR": {
+      "file": "chunk-V2X5ZORR.js"
+    },
+    "chunk-32E4H3EV": {
+      "file": "chunk-32E4H3EV.js"
+    },
+    "chunk-G3PMV62Z": {
+      "file": "chunk-G3PMV62Z.js"
+    }
+  }
+}
