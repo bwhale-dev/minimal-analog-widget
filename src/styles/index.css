@@ -1,9 +1,7 @@
 @import "tailwindcss";
-@import "./theme.css";
-@import "./fonts.css";
 @source "../**/*.{js,ts,jsx,tsx}";
-@import "tw-animate-css";
 
+/* 動かない原因になるので、空のファイルや未設定の import は一旦全部消します！ */
 
 @theme {
   /* 手描き風のガタガタアニメーションを復活 */
