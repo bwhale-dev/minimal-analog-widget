@@ -246,7 +246,7 @@ export function Home() {
               />
             )}
             <div className="relative">
-              <img src={cuckoohouseImage} alt="House" className="w-full" />
+              <img src={cuckoohouseImage} alt="House" className="w-full max-w-[300px] mx-auto block" />
               <div 
                 className="absolute"
                 style={{
