@@ -268,10 +268,10 @@ export function Home() {
                 className="w-full mx-auto block"
                 style={{ maxWidth: `${houseMaxWidth}px` }}
               />
-            <div 
+              <div 
                 className="absolute"
                 style={{
-                  top: isMobile ? '50%' : '58%',  // ← スマホは50%, PC は58%
+                  top: isMobile ? '48%' : '58%',  // スマホを48%に調整
                   left: '50%', 
                   transform: 'translate(-50%, -50%)',
                   filter: bgColor === '#2d3436' ? 'invert(1) brightness(2)' : 'none',
