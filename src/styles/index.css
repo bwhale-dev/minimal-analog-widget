@@ -1,2 +1,17 @@
 @import "tailwindcss";
-@source "../**/*.{js,ts,jsx,tsx}";
+
+/* 強制的に全体をスマホサイズに収める魔法 */
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* 横揺れを禁止 */
+}
+
+#root {
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
