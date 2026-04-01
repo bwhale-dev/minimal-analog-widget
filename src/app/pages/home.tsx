@@ -272,7 +272,7 @@ export function Home() {
                 className="absolute"
                 style={{
                   top: isMobile ? '43%' : '58%',  // スマホを48%に調整
-                  left: '51%', 
+                  left: '53%', 
                   transform: 'translate(-50%, -50%)',
                   filter: bgColor === '#2d3436' ? 'invert(1) brightness(2)' : 'none',
                 }}
