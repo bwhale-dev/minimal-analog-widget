@@ -214,7 +214,7 @@ export function Home() {
                   {/* モバイル: 縦並び, md以上: 横並び */}
             <div className="flex flex-col md:flex-row items-center md:items-end gap-6 md:gap-10 w-full">
             {/* 左側: 時間・日付・名言・天気・ボタン */}
-            <div className="flex-1 w-full mt-8 md:mt-0">
+            <div className="flex-1 w-full mt-28 md:mt-0">
             <div className="text-4xl md:text-7xl font-bold tracking-tight mb-2 leading-none">
               {formatTime(time)}
             </div>
