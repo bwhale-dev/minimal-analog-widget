@@ -211,10 +211,10 @@ export function Home() {
           </button>
         </div>
 
-        {/* モバイル: 縦並び, md以上: 横並び */}
-        <div className="flex flex-col md:flex-row items-center md:items-end gap-6 md:gap-10">
-          {/* 左側: 時間・日付・名言・天気・ボタン */}
-          <div className="flex-1 w-full mt-8 md:mt-0">
+                  {/* モバイル: 縦並び, md以上: 横並び */}
+            <div className="flex flex-col md:flex-row items-center md:items-end gap-6 md:gap-10 w-full">
+            {/* 左側: 時間・日付・名言・天気・ボタン */}
+            <div className="flex-1 w-full md:w-auto">
             <div className="text-4xl md:text-7xl font-bold tracking-tight mb-2 leading-none">
               {formatTime(time)}
             </div>
@@ -251,7 +251,8 @@ export function Home() {
           </div>
 
           {/* 右側: 鳩時計の画像 */}
-          <div className="w-full md:flex-shrink-0 relative flex justify-center md:justify-end" style={{ minHeight: '250px' }}>
+          {/* 右側: 鳩時計の画像 */}
+          <div className="w-full md:w-auto md:flex-shrink-0 relative flex justify-center md:justify-end" style={{ minHeight: '250px' }}>
             {birdFlying && (
               <img
                 src={birdImage}
@@ -267,10 +268,12 @@ export function Home() {
                 className="w-full mx-auto block"
                 style={{ maxWidth: `${houseMaxWidth}px` }}
               />
-              <div 
+            <div 
                 className="absolute"
                 style={{
-                  top: '58%', left: '50%', transform: 'translate(-50%, -50%)',
+                  top: isMobile ? '50%' : '58%',  // ← スマホは50%, PC は58%
+                  left: '50%', 
+                  transform: 'translate(-50%, -50%)',
                   filter: bgColor === '#2d3436' ? 'invert(1) brightness(2)' : 'none',
                 }}
               >
