@@ -129,8 +129,18 @@ export function Home() {
   const playChimeSound = (v: number) => {
     if (!soundEnabled) return;
     const audio = new Audio(chimeAudioPath);
-    audio.volume = v / 100;
-    audio.play().catch(() => {});
+    audio.volume = Math.max(0, Math.min(1, v / 100)); // 0-1の範囲に正規化
+    const playPromise = audio.play();
+    
+    if (playPromise !== undefined) {
+      playPromise
+        .then(() => {
+          console.log('Audio playing successfully');
+        })
+        .catch((err) => {
+          console.error('Audio play failed:', err.message);
+        });
+    }
   };
 
   const handleChime = () => {
