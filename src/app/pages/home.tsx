@@ -271,7 +271,7 @@ export function Home() {
               <div 
                 className="absolute"
                 style={{
-                  top: isMobile ? '43%' : '56%',  // スマホを48%に調整
+                  top: isMobile ? '42%' : '56%',  // スマホを48%に調整
                   left: '50%', 
                   transform: 'translate(-50%, -50%)',
                   filter: bgColor === '#2d3436' ? 'invert(1) brightness(2)' : 'none',
