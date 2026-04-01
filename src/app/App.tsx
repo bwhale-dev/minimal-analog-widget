@@ -1,4 +1,4 @@
-import '../styles/index.css;' // これでCSSを読み込み
+import '../styles/index.css;'       // これでCSSを読み込み
 import { RouterProvider } from "react-router";
 import { router } from "./routes";
 
