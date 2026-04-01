@@ -183,7 +183,7 @@ export function Home() {
   const houseMaxWidth = isMobile ? 200 : 300;
 
   return (
-    <div className="flex items-center justify-center p-4 md:p-8 min-h-screen w-full">
+   <div className="flex items-center justify-center p-4 md:p-8 md:min-h-screen w-full">
       <div
         className="relative w-full max-w-4xl p-4 md:p-12"
         style={{
@@ -212,7 +212,7 @@ export function Home() {
         </div>
 
                   {/* モバイル: 縦並び, md以上: 横並び */}
-            <div className="flex flex-col md:flex-row items-center md:items-end gap-6 md:gap-10 w-full">
+            <div className="flex flex-col md:flex-row items-center md:items-end gap-3 md:gap-10 w-full">
             {/* 左側: 時間・日付・名言・天気・ボタン */}
             <div className="flex-1 w-full mt-28 md:mt-0">
             <div className="text-4xl md:text-7xl font-bold tracking-tight mb-2 leading-none">
