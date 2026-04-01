@@ -185,7 +185,7 @@ export function Home() {
   return (
     <div className="flex items-center justify-center p-4 md:p-8 min-h-screen w-full">
       <div
-        className="relative w-full max-w-4xl p-6 md:p-12"
+        className="relative w-full max-w-4xl p-4 md:p-12"
         style={{
           backgroundColor: bgColor,
           border: `4px solid ${borderColor}`,
