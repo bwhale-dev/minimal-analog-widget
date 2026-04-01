@@ -178,7 +178,7 @@ export function Home() {
     : 'text-base md:text-xl';
 
   // SVG時計のサイズ（モバイル80px, タブレット以上120px）
-  const clockSize = isMobile ? 80 : 100;
+  const clockSize = isMobile ? 70 : 100;
   // 鳩時計の画像サイズ（モバイル200px, タブレット以上300px）
   const houseMaxWidth = isMobile ? 200 : 300;
 
