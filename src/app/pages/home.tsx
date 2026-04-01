@@ -17,7 +17,6 @@ const weatherCodeMap: { [key: number]: { label: string; icon: string } } = {
   80: { label: "にわか雨", icon: "☔" },
 };
 
-// APIが失敗した時のためのバックアップ用名言
 const MAXIMS = [
   { text: "あなたの時間は限られている。だから、誰か他の人の人生を生きることで時間を無駄にしてはいけない。", author: "スティーブ・ジョブズ" },
   { text: "行動の伴わない想像力には、何の意味もない。", author: "チャーリー・チャップリン" },
@@ -57,15 +56,22 @@ export function Home() {
   const [chimeInterval, setChimeInterval] = useState(60);
   const [weather, setWeather] = useState({ label: "取得中...", icon: "⌛" });
   const [dailyMaxim, setDailyMaxim] = useState({ text: "名言を読み込み中...", author: "" });
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
-  // 1. 格言を取得する関数 (世界の言葉をランダムに)
-    const fetchMaxim = useCallback(() => {
-      // リストの中からランダムに1つ選ぶ（通信なし！）
+  // ウィンドウサイズ変更を監視
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const fetchMaxim = useCallback(() => {
     const randomItem = MAXIMS[Math.floor(Math.random() * MAXIMS.length)];
     setDailyMaxim(randomItem);
   }, []);
 
-  // 設定の読み込み
   useEffect(() => {
     const savedSettings = localStorage.getItem('chickenClockSettings');
     if (savedSettings) {
@@ -79,10 +85,9 @@ export function Home() {
         setChimeInterval(settings.chimeInterval?.[0] ?? 60);
       } catch (e) { console.error(e); }
     }
-    fetchMaxim(); // 画面にくるたびに格言を更新
+    fetchMaxim();
   }, [location, fetchMaxim]);
 
-  // 天気の取得
   useEffect(() => {
     const fetchWeather = async (lat: number, lon: number) => {
       try {
@@ -106,13 +111,11 @@ export function Home() {
     );
   }, [location]);
 
-  // 時計の更新
   useEffect(() => {
     const timer = setInterval(() => { setTime(new Date()); }, 1000);
     return () => clearInterval(timer);
   }, []);
 
-  // 鳩の動き
   useEffect(() => {
     if (birdFlying) {
       setBirdPosition('150px');
@@ -167,13 +170,22 @@ export function Home() {
     return `${y}.${m}.${d} ${days[date.getDay()]}`;
   };
 
-  const maximFontSize = dailyMaxim.text.length <= 30 ? 'text-3xl' : 'text-2xl';
-  const authorFontSize = dailyMaxim.text.length <= 30 ? 'text-2xl' : 'text-xl';
+  const maximFontSize = dailyMaxim.text.length <= 30 
+    ? 'text-2xl md:text-3xl' 
+    : 'text-lg md:text-2xl';
+  const authorFontSize = dailyMaxim.text.length <= 30 
+    ? 'text-xl md:text-2xl' 
+    : 'text-base md:text-xl';
+
+  // SVG時計のサイズ（モバイル80px, タブレット以上120px）
+  const clockSize = isMobile ? 80 : 100;
+  // 鳩時計の画像サイズ（モバイル200px, タブレット以上300px）
+  const houseMaxWidth = isMobile ? 200 : 300;
 
   return (
-    <div className="flex items-center justify-center p-8 min-h-screen">
+    <div className="flex items-center justify-center p-4 md:p-8 min-h-screen w-full">
       <div
-        className="relative w-full max-w-4xl p-12"
+        className="relative w-full max-w-4xl p-6 md:p-12"
         style={{
           backgroundColor: bgColor,
           border: `4px solid ${borderColor}`,
@@ -186,7 +198,7 @@ export function Home() {
           <button
             type="button"
             onClick={() => navigate('/settings')}
-            className="flex items-center gap-2 px-4 py-2 font-bold"
+            className="flex items-center gap-2 px-3 md:px-4 py-2 text-sm md:text-base font-bold"
             style={{ 
               backgroundColor: bgColor === '#2d3436' ? 'rgba(255,255,255,0.1)' : '#e5e7eb',
               color: bgColor === '#2d3436' ? '#ffffff' : '#000000',
@@ -194,21 +206,23 @@ export function Home() {
               filter: 'url(#roughEdges)' 
             }}
           >
-            <Settings size={25} /> 
+            <Settings size={20} /> 
             <span>設定</span>
           </button>
         </div>
 
-        <div className="flex items-end gap-10">
-          <div className="flex-1">
-            <div className="text-7xl font-bold tracking-tight mb-2 leading-none mt-12">
+        {/* モバイル: 縦並び, md以上: 横並び */}
+        <div className="flex flex-col md:flex-row items-center md:items-end gap-6 md:gap-10">
+          {/* 左側: 時間・日付・名言・天気・ボタン */}
+          <div className="flex-1 w-full mt-8 md:mt-0">
+            <div className="text-4xl md:text-7xl font-bold tracking-tight mb-2 leading-none">
               {formatTime(time)}
             </div>
-            <div className="text-xl mb-8 opacity-70">
+            <div className="text-base md:text-xl mb-6 md:mb-8 opacity-70">
               {formatDate(time)}
             </div>
 
-            <div className="mb-10 w-full max-w-[500px]">
+            <div className="mb-6 md:mb-10 w-full">
               <div className={`font-serif italic leading-relaxed whitespace-pre-wrap ${maximFontSize}`}>
                 {dailyMaxim.text}
               </div>
@@ -217,14 +231,14 @@ export function Home() {
               </div>
             </div>
 
-            <div className="flex items-center gap-3 text-3xl mb-8">
-              <span className="text-4xl">{weather.icon}</span>
-              <span>{weather.label}</span>
+            <div className="flex items-center gap-3 text-2xl md:text-3xl mb-6 md:mb-8">
+              <span className="text-3xl md:text-4xl">{weather.icon}</span>
+              <span className="text-base md:text-lg">{weather.label}</span>
             </div>
 
             <button
               onClick={handleChime}
-              className="px-6 py-3 text-lg font-bold"
+              className="px-4 md:px-6 py-2 md:py-3 text-sm md:text-lg font-bold w-full md:w-auto"
               style={{
                 backgroundColor: bgColor === '#2d3436' ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.8)',
                 color: bgColor === '#2d3436' ? '#ffffff' : '#000000',
@@ -236,17 +250,23 @@ export function Home() {
             </button>
           </div>
 
-          <div className="w-80 relative">
+          {/* 右側: 鳩時計の画像 */}
+          <div className="w-full md:flex-shrink-0 relative flex justify-center md:justify-end" style={{ minHeight: '250px' }}>
             {birdFlying && (
               <img
                 src={birdImage}
                 alt="Bird"
-                className="absolute w-16 h-16 z-10 transition-all duration-800"
-                style={{ top: birdPosition, left: '50%', transform: 'translateX(-50%)' }}
+                className="absolute w-12 md:w-16 h-12 md:h-16 z-10 transition-all duration-800"
+                style={{ top: birdPosition, left: '50%', transform: 'translateX(-50%)', maxWidth: '100%' }}
               />
             )}
-            <div className="relative">
-              <img src={cuckoohouseImage} alt="House" className="w-full max-w-[300px] mx-auto block" />
+            <div className="relative w-full max-w-xs">
+              <img 
+                src={cuckoohouseImage} 
+                alt="House" 
+                className="w-full mx-auto block"
+                style={{ maxWidth: `${houseMaxWidth}px` }}
+              />
               <div 
                 className="absolute"
                 style={{
@@ -254,7 +274,7 @@ export function Home() {
                   filter: bgColor === '#2d3436' ? 'invert(1) brightness(2)' : 'none',
                 }}
               >
-                <AnalogClock time={time} size={100} />
+                <AnalogClock time={time} size={clockSize} />
               </div>
             </div>
           </div>
