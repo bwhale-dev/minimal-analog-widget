@@ -43,6 +43,7 @@ const MAXIMS = [
 export function Home() {
   const location = useLocation();
   const navigate = useNavigate();
+  const [lastChimeTime, setLastChimeTime] = useState<number>(Date.now());
   const [time, setTime] = useState(new Date());
   const [isChiming, setIsChiming] = useState(false);
   const [birdFlying, setBirdFlying] = useState(false);
@@ -72,6 +73,7 @@ export function Home() {
     setDailyMaxim(randomItem);
   }, []);
 
+  // 設定読み込み
   useEffect(() => {
     const savedSettings = localStorage.getItem('chickenClockSettings');
     if (savedSettings) {
@@ -88,6 +90,7 @@ export function Home() {
     fetchMaxim();
   }, [location, fetchMaxim]);
 
+  // 天気取得
   useEffect(() => {
     const fetchWeather = async (lat: number, lon: number) => {
       try {
@@ -111,11 +114,35 @@ export function Home() {
     );
   }, [location]);
 
+  // 1秒ごとの時計更新
   useEffect(() => {
     const timer = setInterval(() => { setTime(new Date()); }, 1000);
     return () => clearInterval(timer);
   }, []);
 
+    // 2. 自動鳴動のチェックロジックを以下に差し替え
+  useEffect(() => {
+    if (!autoChime) return;
+
+    const checkChime = () => {
+      const now = Date.now(); // 現在の時刻（ミリ秒）
+      const intervalMs = chimeInterval * 60 * 1000; // 設定分をミリ秒に変換
+
+      // 「今の時刻」が「最後に鳴った時刻 + 設定時間」を過ぎているかチェック
+      if (now >= lastChimeTime + intervalMs) {
+        if (!isChiming) {
+          console.log(`${chimeInterval}分経過したので鳩を出します！`);
+          handleChime();
+          setLastChimeTime(now); // 鳴らした時刻をメモ（ここからまたカウント開始）
+        }
+      }
+    };
+
+    const intervalId = setInterval(checkChime, 1000);
+    return () => clearInterval(intervalId);
+  }, [autoChime, chimeInterval, isChiming, lastChimeTime]);
+
+  // 鳩の動き
   useEffect(() => {
     if (birdFlying) {
       setBirdPosition('150px');
@@ -129,22 +156,18 @@ export function Home() {
   const playChimeSound = (v: number) => {
     if (!soundEnabled) return;
     const audio = new Audio(chimeAudioPath);
-    audio.volume = Math.max(0, Math.min(1, v / 100)); // 0-1の範囲に正規化
+    audio.volume = Math.max(0, Math.min(1, v / 100));
     const playPromise = audio.play();
     
     if (playPromise !== undefined) {
       playPromise
-        .then(() => {
-          console.log('Audio playing successfully');
-        })
-        .catch((err) => {
-          console.error('Audio play failed:', err.message);
-        });
+        .then(() => console.log('Audio playing'))
+        .catch((err) => console.error('Audio play failed:', err.message));
     }
   };
 
   const handleChime = () => {
-    const currentHour = time.getHours();
+    const currentHour = new Date().getHours();
     const chimeTimes = currentHour % 12 === 0 ? 12 : currentHour % 12;
     setIsChiming(true);
     setChimeCount(0);
@@ -180,20 +203,13 @@ export function Home() {
     return `${y}.${m}.${d} ${days[date.getDay()]}`;
   };
 
-  const maximFontSize = dailyMaxim.text.length <= 30 
-    ? 'text-2xl md:text-3xl' 
-    : 'text-lg md:text-2xl';
-  const authorFontSize = dailyMaxim.text.length <= 30 
-    ? 'text-xl md:text-2xl' 
-    : 'text-base md:text-xl';
-
-  // SVG時計のサイズ（モバイル80px, タブレット以上120px）
+  const maximFontSize = dailyMaxim.text.length <= 30 ? 'text-2xl md:text-3xl' : 'text-lg md:text-2xl';
+  const authorFontSize = dailyMaxim.text.length <= 30 ? 'text-xl md:text-2xl' : 'text-base md:text-xl';
   const clockSize = isMobile ? 70 : 100;
-  // 鳩時計の画像サイズ（モバイル200px, タブレット以上300px）
   const houseMaxWidth = isMobile ? 200 : 300;
 
   return (
-   <div className="flex items-center justify-center p-4 md:p-8 md:min-h-screen w-full">
+    <div className="flex items-center justify-center p-4 md:p-8 md:min-h-screen w-full">
       <div
         className="relative w-full max-w-4xl p-4 md:p-12"
         style={{
@@ -221,10 +237,8 @@ export function Home() {
           </button>
         </div>
 
-                  {/* モバイル: 縦並び, md以上: 横並び */}
-            <div className="flex flex-col md:flex-row items-center md:items-end gap-3 md:gap-10 w-full">
-            {/* 左側: 時間・日付・名言・天気・ボタン */}
-            <div className="flex-1 w-full mt-28 md:mt-0">
+        <div className="flex flex-col md:flex-row items-center md:items-end gap-3 md:gap-10 w-full">
+          <div className="flex-1 w-full mt-28 md:mt-0">
             <div className="text-4xl md:text-7xl font-bold tracking-tight mb-2 leading-none">
               {formatTime(time)}
             </div>
@@ -260,8 +274,6 @@ export function Home() {
             </button>
           </div>
 
-          {/* 右側: 鳩時計の画像 */}
-          {/* 右側: 鳩時計の画像 */}
           <div className="w-full md:w-auto md:flex-shrink-0 relative flex justify-center md:justify-end" style={{ minHeight: '250px' }}>
             {birdFlying && (
               <img
@@ -271,22 +283,9 @@ export function Home() {
                 style={{ top: birdPosition, left: '50%', transform: 'translateX(-50%)', maxWidth: '100%' }}
               />
             )}
-            <div className="relative w-full max-w-xs">
-              <img 
-                src={cuckoohouseImage} 
-                alt="House" 
-                className="w-full mx-auto block"
-                style={{ maxWidth: `${houseMaxWidth}px` }}
-              />
-              <div 
-                className="absolute"
-                style={{
-                  top: isMobile ? '42%' : '56%',  // スマホを48%に調整
-                  left: '50%', 
-                  transform: 'translate(-50%, -50%)',
-                  filter: bgColor === '#2d3436' ? 'invert(1) brightness(2)' : 'none',
-                }}
-              >
+            <div className="relative w-full max-xs">
+              <img src={cuckoohouseImage} alt="House" className="w-full mx-auto block" style={{ maxWidth: `${houseMaxWidth}px` }} />
+              <div className="absolute" style={{ top: isMobile ? '42%' : '56%', left: '50%', transform: 'translate(-50%, -50%)', filter: bgColor === '#2d3436' ? 'invert(1) brightness(2)' : 'none' }}>
                 <AnalogClock time={time} size={clockSize} />
               </div>
             </div>
