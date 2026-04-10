@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex,nofollow">
+    <title>Minimal Analog Widget</title>
+    <script type="module" crossorigin src="./assets/index-1MDJJKlm.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-BNpgIs5P.css">
+  <link rel="manifest" href="./manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="./registerSW.js"></script></head>
+
+  <body>
+    <svg style="display: none;">
+      <defs>
+        <filter id="roughEdges">
+          <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="2" result="noise" />
+          <feDisplacementMap in="SourceGraphic" in2="noise" scale="4" />
+        </filter>
+      </defs>
+    </svg>
+
+    <div id="root"></div>
+
+  </body>
+</html>
